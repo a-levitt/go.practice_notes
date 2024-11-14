@@ -2,7 +2,10 @@ package main
 
 import (
 	"alevitt.com/note/note"
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 )
 
 func main() {
@@ -15,19 +18,27 @@ func main() {
 		return
 	}
 
+	userNote.Display()
 }
 
 func getNoteData() (string, string) {
-	title := getUserInput("Note title:")
-	content := getUserInput("Note content:")
+	title := getUserInput("Note title: ")
+	content := getUserInput("Note content: ")
 
 	return title, content
 }
 
 func getUserInput(prompt string) string {
 	fmt.Print(prompt)
-	var value string
-	fmt.Scanln(&value)
 
-	return value
+	reader := bufio.NewReader(os.Stdin)
+	text, err := reader.ReadString('\n')
+	if err != nil {
+		return ""
+	}
+
+	text = strings.TrimSuffix(text, "\n")
+	text = strings.TrimSuffix(text, "\r")
+
+	return text
 }
